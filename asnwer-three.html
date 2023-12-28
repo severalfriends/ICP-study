@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <title>homework</title>
+</head>
+<body>
+<h2>DFINITY课程【第三课】</h2>
+<h3>作业：给 Counter 添加一个 http_request 方法，用返回 html 的方式显示当前 count 的值。</h3>
+<p> 要求：</p>
+<p>1）提交主程序源码链接（3 分）</p>
+<p>2）完成主网部署并提交链接（3 分）</p>
+<span>1. 主程序原码：</span>
+<pre>
+    import Blob "mo:base/Blob";
+    import Text "mo:base/Text";
+    import Nat16 "mo:base/Nat16";
+    import Nat "mo:base/Nat";
+    
+    // Create a simple Counter actor.
+    actor Counter {
+      stable var currentValue : Nat = 0;
+    
+      // Increment the counter with the increment function.
+      public func increment() : async () {
+      currentValue += 1;
+      };
+    
+      // Read the counter value with a get function.
+      public query func get() : async Nat {
+      currentValue
+      };
+    
+      // Write an arbitrary value with a set function.
+      public func set(n: Nat) : async () {
+      currentValue := n;  
+      };
+    
+      type HttpRequest = {
+        body: Blob;
+        headers: [HeaderField];
+        method: Text;
+        url: Text;
+      };
+    
+      type HttpResponse = {
+        body: Blob;
+        headers: [HeaderField];
+        status_code: Nat16;
+      };
+    
+      type HeaderField = (Text, Text);
+    
+      public query func http_request(arg: HttpRequest) : async HttpResponse {
+        {
+          body = Text.encodeUtf8("current counter: " # Nat.toText(currentValue));
+          headers = [];
+          status_code = 200;
+        }
+      }
+    
+    
+    }
+</pre>
+<span>2. 主网连接</span>
+<p>https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=nmr3q-3qaaa-aaaak-afhqq-cai</p>
+<p>https://nmr3q-3qaaa-aaaak-afhqq-cai.raw.icp0.io/</p>
+</body>
+</html>
